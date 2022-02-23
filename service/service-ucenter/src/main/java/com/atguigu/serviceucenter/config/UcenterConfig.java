@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.atguigu.serviceedu.mapper")
+@MapperScan("com.atguigu.serviceucenter.mapper")
 public class UcenterConfig {
 
     /**

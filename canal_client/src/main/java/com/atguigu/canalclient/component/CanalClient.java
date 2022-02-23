@@ -18,17 +18,32 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * canal实现主从复制原理:
+ * <p>
+ * 主库开启bin_log配置 发送event
+ * <p>
+ * 配置canal canal开启线程读取bin_log内容
+ * 将 bin_log内容解析
+ * <p>
+ * canal获取解析的内容
+ * <p>
+ * canal_client 通过链接获取到从库
+ * <p>
+ * 将主库的执行命令发送到从库入库
+ */
 @Component
 public class CanalClient {
-        //sql队列
+    //sql队列
     private Queue<String> SQL_QUEUE = new ConcurrentLinkedQueue<>();
     @Resource
     private DataSource dataSource;
-        /**
-         * canal入库方法
-         */
+
+    /**
+     * canal入库方法
+     */
     public void run() {
-        CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress("127.0.0.1",11111), "example", "", "");
+        CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress("127.0.0.1", 11111), "example", "", "");
         int batchSize = 1000;
         try {
             connector.connect();
@@ -60,9 +75,10 @@ public class CanalClient {
             connector.disconnect();
         }
     }
-        /**
-         * 模拟执行队列里面的sql语句
-         */
+
+    /**
+     * 模拟执行队列里面的sql语句
+     */
     public void executeQueueSql() {
         int size = SQL_QUEUE.size();
         for (int i = 0; i < size; i++) {
@@ -71,11 +87,12 @@ public class CanalClient {
             this.execute(sql.toString());
         }
     }
-        /**
-         * 数据处理
-         *
-         * @param entrys
-         */
+
+    /**
+     * 数据处理
+     *
+     * @param entrys
+     */
     private void dataHandle(List<CanalEntry.Entry> entrys) throws InvalidProtocolBufferException {
         for (CanalEntry.Entry entry : entrys) {
             if (CanalEntry.EntryType.ROWDATA == entry.getEntryType()) {
@@ -91,11 +108,12 @@ public class CanalClient {
             }
         }
     }
-        /**
-         * 保存更新语句
-         *
-         * @param entry
-         */
+
+    /**
+     * 保存更新语句
+     *
+     * @param entry
+     */
     private void saveUpdateSql(CanalEntry.Entry entry) {
         try {
             CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
@@ -105,7 +123,7 @@ public class CanalClient {
                 StringBuffer sql = new StringBuffer("update " + entry.getHeader().getTableName() + " set ");
                 for (int i = 0; i < newColumnList.size(); i++) {
                     sql.append(" " + newColumnList.get(i).getName()
-                                    + " = '" + newColumnList.get(i).getValue() + "'");
+                            + " = '" + newColumnList.get(i).getValue() + "'");
                     if (i != newColumnList.size() - 1) {
                         sql.append(",");
                     }
@@ -125,11 +143,12 @@ public class CanalClient {
             e.printStackTrace();
         }
     }
-        /**
-         * 保存删除语句
-         *
-         * @param entry
-         */
+
+    /**
+     * 保存删除语句
+     *
+     * @param entry
+     */
     private void saveDeleteSql(CanalEntry.Entry entry) {
         try {
             CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
@@ -150,11 +169,12 @@ public class CanalClient {
             e.printStackTrace();
         }
     }
-        /**
-         * 保存插入语句
-         *
-         * @param entry
-         */
+
+    /**
+     * 保存插入语句
+     *
+     * @param entry
+     */
     private void saveInsertSql(CanalEntry.Entry entry) {
         try {
             CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
@@ -182,18 +202,20 @@ public class CanalClient {
             e.printStackTrace();
         }
     }
+
     /**
      * 入库
+     *
      * @param sql
      */
     public void execute(String sql) {
         Connection con = null;
         try {
-            if(null == sql) return;
+            if (null == sql) return;
             con = dataSource.getConnection();
             QueryRunner qr = new QueryRunner();
             int row = qr.execute(con, sql);
-            System.out.println("update: "+ row);
+            System.out.println("update: " + row);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

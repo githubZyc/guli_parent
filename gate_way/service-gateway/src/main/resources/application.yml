@@ -1,0 +1,29 @@
+server:
+  port: 8222
+spring:
+  application:
+    name: service-gateway
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true #服务器路由名小写
+      routes:
+#        - id: service-acl
+#          uri: lb://service-acl
+#          predicates:
+#          - Path=/*/acl/** # 路径匹配
+        - id: service-edu
+          uri: lb://service-edu
+          predicates:
+          - Path=/edu/** # 路径匹配
+        - id: service-ucenter
+          uri: lb://service-ucenter
+          predicates:
+          - Path=/ucenter/** # 路径匹配

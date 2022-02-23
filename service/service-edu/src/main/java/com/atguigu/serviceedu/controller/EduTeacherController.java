@@ -2,7 +2,6 @@ package com.atguigu.serviceedu.controller;
 
 
 import com.atguigu.commonutils.vo.R;
-import com.atguigu.servicebase.handler.exception.GuiGuException;
 import com.atguigu.serviceedu.dto.query.EduTeacherQuery;
 import com.atguigu.serviceedu.entity.EduTeacher;
 import com.atguigu.serviceedu.service.EduTeacherService;
@@ -84,11 +83,6 @@ public class EduTeacherController {
     public R removeById(
             @ApiParam(name = "id", value = "讲师ID", required = true)
             @PathVariable String id) {
-        try {
-            int i = 1 / 0;
-        } catch (Exception e) {
-            throw new GuiGuException(1001,"小错误而已");
-        }
         eduTeacherService.removeById(id);
         return R.ok();
     }
@@ -98,6 +92,7 @@ public class EduTeacherController {
     public R getById(
             @ApiParam(name = "id", value = "讲师ID", required = true)
             @PathVariable String id) {
+        System.out.println("根据ID查询讲师：{}"+id);
         EduTeacher teacher = eduTeacherService.getById(id);
         return R.ok().data("item", teacher);
     }
