@@ -15,10 +15,10 @@ spring:
           enabled: true
           lower-case-service-id: true #服务器路由名小写
       routes:
-#        - id: service-acl
-#          uri: lb://service-acl
-#          predicates:
-#          - Path=/*/acl/** # 路径匹配
+        - id: service-acl
+          uri: lb://service-acl
+          predicates:
+          - Path=/*/acl/** # 路径匹配
         - id: service-edu
           uri: lb://service-edu
           predicates:

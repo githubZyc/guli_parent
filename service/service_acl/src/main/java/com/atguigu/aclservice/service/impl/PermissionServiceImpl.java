@@ -44,7 +44,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         List<Permission> permissionList = baseMapper.selectList(wrapper);
 
         //把查询所有菜单list集合按要求进行封装
-        List<Permission> result = bulidPermission(permissionList);
+        List<Permission> result = buildPermission(permissionList);
         return result;
     }
 
@@ -78,7 +78,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     //给角色分配权限
     @Override
-    public void saveRolePermissionRealtionShip(String roleId, String[] permissionIds) {
+    public void saveRolePermissionRelationShip(String roleId, String[] permissionIds) {
 
         rolePermissionService.remove(new QueryWrapper<RolePermission>().eq("role_id", roleId));
 
@@ -202,7 +202,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     //使用递归方法建菜单
     //把返回所有菜单list集合进行封装的方法
-    public static List<Permission> bulidPermission(List<Permission> permissionList) {
+    public static List<Permission> buildPermission(List<Permission> permissionList) {
         //创建list集合，用于数据最终封装
         List<Permission> finalNode = new ArrayList<>();
         //把所有菜单list集合遍历，得到顶层菜单 pid=0菜单，设置level是1
@@ -220,7 +220,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     //递归查找子节点
     private static Permission selectChildren(Permission permissionNode, List<Permission> permissionList) {
-        //1 因为向一层菜单里面放二层菜单，二层里面还要放三层，把对象初始化
+        //1 因为上一层菜单里面放二层菜单，二层里面还要放三层，把对象初始化
         permissionNode.setChildren(new ArrayList<Permission>());
 
         //2 遍历所有菜单list集合，进行判断比较，比较id和pid值是否相同

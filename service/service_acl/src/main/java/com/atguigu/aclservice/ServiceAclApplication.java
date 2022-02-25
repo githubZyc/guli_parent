@@ -7,6 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
+@ComponentScan(basePackages = {"com.atguigu"})
 @MapperScan("com.atguigu.aclservice.mapper")
 public class ServiceAclApplication {
 
