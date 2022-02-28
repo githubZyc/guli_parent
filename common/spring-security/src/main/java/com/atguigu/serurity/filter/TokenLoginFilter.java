@@ -23,6 +23,8 @@ import java.util.ArrayList;
 /**
  * <p>
  * 登录过滤器，继承UsernamePasswordAuthenticationFilter，对用户名密码进行登录校验
+ *
+ * spring
  * </p>
  */
 public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -39,12 +41,20 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/admin/acl/login","POST"));
     }
 
+    /**
+     * 尝试授权 登录入口
+     * @param req
+     * @param res
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException {
         try {
+            //从登陆请求中获取当前输入的登录信息：用户名+密码
             User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
-
+            //开始身份验证 UsernamePasswordAuthenticationToken 用户token 认证身份   进入userDetailsServiceImpl 获取用户信息和权限
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -63,10 +73,12 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
+        //登录成功 获取登录认证用户
         SecurityUser user = (SecurityUser) auth.getPrincipal();
+        //创建token
         String token = tokenManager.createToken(user.getCurrentUserInfo().getUsername());
+        //设置当前用户token
         redisTemplate.opsForValue().set(user.getCurrentUserInfo().getUsername(), user.getPermissionValueList());
-
         res.getWriter().print(R.ok().data("token", token));
     }
 

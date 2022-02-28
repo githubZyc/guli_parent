@@ -19,17 +19,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * <p>
- * Security配置类
+ * Security核心配置类
  * </p>
  */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    //查询用户信息
     private UserDetailsService userDetailsService;
+    //管理token 并生成
     private TokenManager tokenManager;
+    //密码处理
     private DefaultPasswordEncoder defaultPasswordEncoder;
+    //存储
     private RedisTemplate redisTemplate;
 
     @Autowired

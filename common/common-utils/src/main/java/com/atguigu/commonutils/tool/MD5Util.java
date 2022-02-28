@@ -175,16 +175,5 @@ public class MD5Util {
             }  
         }  
         return generateRandStr+"";  
-    }  
-	
-	public static void main(String[] args) throws IOException {
-		/*String filePath2 = "F:/图片/搜狗图片/766971.jpg";
-		System.out.println("766971文件加密结果为：" + getFileMD5String(new File(filePath2)));
-		String filePath = "F:/图片/搜狗图片/766972.jpg";
-		System.out.println("766972文件加密结果为：" + getFileMD5String(new File(filePath)));*/
-		String filePath1 = UUID.randomUUID().toString();
-		System.out.println(getMD5String(filePath1));
-		System.out.println(getMD5String("111111"));
-		System.out.println(getUUIDByRules("1234567890qwertyuiopasdfghjklzxcvbnm"));
-	}
+    }
 }
