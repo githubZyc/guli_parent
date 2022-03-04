@@ -40,7 +40,7 @@ import java.util.Date;
 public class JWTUtils {
     //过期时间
     public static final long EXPIRE = 1000 * 60 * 60 * 24;
-    //签名串：服务端保存 不可泄露
+    //签名串：服务端保存 不可泄露 签名只是为了保证不被篡改数据
     public static final String APP_SECRET = "ukc8BDbRigUDaY6pZFfWus2jZWLPHO";
 
     public static String getJwtToken(String id, String nickname){
@@ -52,6 +52,7 @@ public class JWTUtils {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE))
                 .claim("id", id)
                 .claim("nickname", nickname)
+                //签名的这部分解不出来
                 .signWith(SignatureAlgorithm.HS256, APP_SECRET)
                 .compact();
     }
