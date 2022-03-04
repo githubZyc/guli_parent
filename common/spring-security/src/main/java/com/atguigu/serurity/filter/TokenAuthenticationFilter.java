@@ -69,11 +69,12 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
             List<String> permissionValueList = (List<String>) redisTemplate.opsForValue().get(userName);
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             for(String permissionValue : permissionValueList) {
-                if(StringUtils.isEmpty(permissionValue)) continue;
+                if(StringUtils.isEmpty(permissionValue)) {
+                    continue;
+                }
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permissionValue);
                 authorities.add(authority);
             }
-
             if (!StringUtils.isEmpty(userName)) {
                 return new UsernamePasswordAuthenticationToken(userName, token, authorities);
             }
