@@ -61,7 +61,7 @@ public class Test {
         Map<Integer, List<Node>> integerListMap = tree.convertList2(nodeList);
         //从根开始
         List<Node> nodeList1 = integerListMap.get(0);
-        print(integerListMap,nodeList1);
+        print(integerListMap,nodeList1,0);
     }
 
     /**
@@ -98,16 +98,16 @@ public class Test {
      * @Return void
      * @Version 1.0
      **/
-    private static void print(Map<Integer, List<Node>> map, List<Node> nodeList1){
+    private static void print(Map<Integer, List<Node>> map, List<Node> nodeList1,int space){
         for (int i=0;i< nodeList1.size();i++) {
             //输出每一次根的名字
             Node node = nodeList1.get(i);
-            System.out.println(getT(node.getParentId()) + node.getName());
+            System.out.println(getT(space) + node.getName());
             //当前节点下的子节点
             List<Node> subNodes = map.get(node.getId());
             if (subNodes != null && subNodes.size() > 0) {
                 //获取当前子节点下对应的下一级
-                print(map, subNodes);
+                print(map, subNodes,space+1);
             }
         }
     }
