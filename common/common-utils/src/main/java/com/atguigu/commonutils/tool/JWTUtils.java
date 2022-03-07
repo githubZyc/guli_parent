@@ -52,7 +52,6 @@ public class JWTUtils {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE))
                 .claim("id", id)
                 .claim("nickname", nickname)
-                //签名的这部分解不出来
                 .signWith(SignatureAlgorithm.HS256, APP_SECRET)
                 .compact();
     }
