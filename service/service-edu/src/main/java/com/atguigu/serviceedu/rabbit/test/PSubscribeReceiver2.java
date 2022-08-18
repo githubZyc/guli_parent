@@ -3,6 +3,7 @@ package com.atguigu.serviceedu.rabbit.test;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -66,7 +67,7 @@ public class PSubscribeReceiver2 {
 
         // 订阅消息的回调函数
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), "UTF-8");
+            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             System.out.println(" [x] Received2 '" + message + "'");
         };
 
