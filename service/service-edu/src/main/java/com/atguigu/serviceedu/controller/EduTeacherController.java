@@ -8,6 +8,7 @@ import com.atguigu.serviceedu.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.List;
 @Api("edu-teacher控制接口")
 @RestController
 @RequestMapping("/teacher")
+@Slf4j
 public class EduTeacherController {
     @Autowired
     private EduTeacherService eduTeacherService;
@@ -65,6 +67,7 @@ public class EduTeacherController {
     @ApiOperation(value = "所有讲师列表")
     @GetMapping
     public R list() {
+        log.info("logstash-所有讲师列表所有讲师列表所有讲师列表所有讲师列表所有讲师列表所有讲师列表所有讲师列表");
         List<EduTeacher> list = eduTeacherService.list(null);
         return R.ok().data("items", list);
     }

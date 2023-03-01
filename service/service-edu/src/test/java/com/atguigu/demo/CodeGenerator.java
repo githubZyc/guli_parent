@@ -21,7 +21,7 @@ public class CodeGenerator {
 //        String projectPath = System.getProperty("user.dir");
 //        System.out.println(projectPath);
 
-        gc.setOutputDir("/Volumes/files/workspace/guli_parent/service/service-edu" + "/src/main/java");
+        gc.setOutputDir("/Volumes/files/my/temp");
         gc.setAuthor("ZhengYanChuang");
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖
@@ -36,10 +36,11 @@ public class CodeGenerator {
         mpg.setGlobalConfig(gc);
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/guigu_mp?serverTimezone=GMT%2B8");
+        dsc.setUrl("jdbc:mysql://10.19.1.217:3306/yq_newmedia_cms?serverTimezone=GMT%2B8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("root");
+        dsc.setPassword("Pdmi@1234");
+
         dsc.setDbType(DbType.MYSQL);
         mpg.setDataSource(dsc);
         // 4、包配置
@@ -51,9 +52,9 @@ public class CodeGenerator {
         pc.setService("service");
         pc.setMapper("mapper");
         mpg.setPackageInfo(pc);
-        // 5、策略配置
+        // 5、策略配置C
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("edu_course");
+        strategy.setInclude("t_cms_live_red_package","t_cms_live_red_package_log","t_cms_live_red_package_statistics");
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);//数据库表字段映射到实体的命名策略

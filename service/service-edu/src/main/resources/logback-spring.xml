@@ -106,6 +106,13 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
+    <appender name="DEV_LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>192.168.35.160:5047</destination>
+        <queueSize>1048576</queueSize>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+
+
     <!--
         <logger>用来设置某一个包或者具体的某一个类的日志打印级别、以及指定<appender>。
         <logger>仅有一个name属性，
@@ -133,6 +140,7 @@
             <appender-ref ref="INFO_FILE"/>
             <appender-ref ref="WARN_FILE"/>
             <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="DEV_LOGSTASH"/>
         </root>
     </springProfile>
     <!--生产环境:输出到文件-->
